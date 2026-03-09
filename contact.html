@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Alka AI</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page header ──────────────────────────────────── */
+    .page-header {
+      text-align: center; padding: 3rem 1.5rem 2rem;
+    }
+    .page-header .ph-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff3c3c, #ff7a4a);
+      font-size: 2rem; margin-bottom: 1.25rem;
+      box-shadow: 0 0 32px rgba(255,60,60,.28);
+    }
+    .page-header h1 {
+      font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--txt) 50%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: .6rem;
+    }
+    .page-header p { color: var(--muted); font-size: .85rem; max-width: 480px; margin: 0 auto; }
+
+    /* ── Contact layout ───────────────────────────────── */
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin: 2rem 0;
+    }
+
+    /* ── Info cards ───────────────────────────────────── */
+    .contact-info { display: flex; flex-direction: column; gap: 1.1rem; }
+    .ci-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--rL); padding: 1.5rem 1.6rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+      transition: all var(--ease);
+    }
+    .ci-card:hover { border-color: var(--borderH); transform: translateX(4px); }
+    .ci-icon {
+      width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .ci-label {
+      font-size: .68rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .3rem; font-weight: 600;
+    }
+    .ci-value {
+      font-family: 'Syne', sans-serif; font-size: .92rem;
+      font-weight: 700; color: var(--txt);
+    }
+    .ci-value a {
+      color: var(--cyan); text-decoration: none;
+      transition: color var(--ease);
+    }
+    .ci-value a:hover { text-decoration: underline; }
+    .ci-sub { font-size: .74rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── Formulaire de contact ────────────────────────── */
+    .contact-form {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--rL); padding: 2rem;
+    }
+    .contact-form h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800;
+      color: var(--txt); margin-bottom: 1.5rem; padding-bottom: .7rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Spin */
+    .spin {
+      display: none; width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.25); border-top-color: #fff;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Alerte succès */
+    .alert-ok {
+      display: none; align-items: center; gap: .6rem;
+      padding: .7rem 1rem; border-radius: var(--r); font-size: .8rem; margin-top: 1rem;
+      background: rgba(0,212,255,.07); border: 1px solid rgba(0,212,255,.22); color: var(--cyan);
+    }
+    .alert-ok.show { display: flex; }
+
+    /* Bouton cyan */
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; box-shadow: 0 4px 18px rgba(0,212,255,.18);
+    }
+    .btn-cyan:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(0,212,255,.3); }
+
+    /* ── Note délai réponse ───────────────────────────── */
+    .response-note {
+      background: rgba(255,200,74,.05); border: 1px solid rgba(255,200,74,.18);
+      border-radius: var(--r); padding: .75rem 1rem;
+      font-size: .75rem; color: var(--gold); margin-top: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border); padding: 2rem 1.5rem; margin-top: 3rem;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .footer-links {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .footer-links a {
+      color: var(--muted); text-decoration: none; font-size: .78rem;
+      transition: color var(--ease);
+    }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-links a.active { color: var(--cyan); }
+    .footer-copy { font-size: .72rem; color: var(--dim); }
+
+    @media (max-width: 800px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ───────────────────────────────────────── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">⬡ Alka AI</a>
+  <div class="nav-user">
+    <a href="index.html" class="btn-out" style="text-decoration:none">← Accueil</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="ph-icon">✉️</div>
+    <h1>Contactez-nous</h1>
+    <p>Une question ? Un problème ? Nous répondons dans les plus brefs délais.</p>
+  </div>
+
+  <div class="contact-layout">
+
+    <!-- ── Informations de contact ─────────────────── -->
+    <div class="contact-info">
+
+      <!-- Email principal -->
+      <div class="ci-card">
+        <div class="ci-icon" style="background:rgba(0,212,255,.1)">📧</div>
+        <div>
+          <div class="ci-label">Email principal</div>
+          <div class="ci-value">
+            <a href="mailto:alkaai.contact@gmail.com">alkaai.contact@gmail.com</a>
+          </div>
+          <div class="ci-sub">Pour toute demande générale ou technique</div>
+        </div>
+      </div>
+
+      <!-- Signalement / Urgence -->
+      <div class="ci-card">
+        <div class="ci-icon" style="background:rgba(255,60,60,.1)">🚨</div>
+        <div>
+          <div class="ci-label">Signalement urgent</div>
+          <div class="ci-value">
+            <a href="mailto:alkaai.contact@gmail.com?subject=URGENT">alkaai.contact@gmail.com</a>
+          </div>
+          <div class="ci-sub">Indiquez "URGENT" dans l'objet de votre email</div>
+        </div>
+      </div>
+
+      <!-- Protection des données -->
+      <div class="ci-card">
+        <div class="ci-icon" style="background:rgba(124,92,252,.1)">🔒</div>
+        <div>
+          <div class="ci-label">Protection des données</div>
+          <div class="ci-value">
+            <a href="mailto:alkaai.contact@gmail.com?subject=Données personnelles">alkaai.contact@gmail.com</a>
+          </div>
+          <div class="ci-sub">Demandes RGPD, suppression de compte, accès aux données</div>
+        </div>
+      </div>
+
+      <!-- Délai de réponse -->
+      <div class="response-note">
+        <span>⏱</span>
+        Délai de réponse habituel : <strong>24 à 48 heures</strong> ouvrables.
+      </div>
+
+    </div>
+
+    <!-- ── Formulaire de contact ───────────────────── -->
+    <div class="contact-form">
+      <h2>📩 Envoyer un message</h2>
+
+      <div class="fg">
+        <label>👤 Votre nom</label>
+        <div class="iw">
+          <span class="icon">👤</span>
+          <input type="text" id="c-nom" placeholder="Votre nom complet" />
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>📧 Votre email</label>
+        <div class="iw">
+          <span class="icon">📧</span>
+          <input type="email" id="c-email" placeholder="vous@exemple.com" />
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>📋 Sujet</label>
+        <div class="iw">
+          <span class="icon">📋</span>
+          <select id="c-sujet">
+            <option value="">— Choisir un sujet —</option>
+            <option value="Question générale">Question générale</option>
+            <option value="Problème technique">Problème technique</option>
+            <option value="Suppression de compte">Suppression de compte</option>
+            <option value="Protection des données">Protection des données</option>
+            <option value="Partenariat">Partenariat</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>💬 Message</label>
+        <div class="iw">
+          <span class="icon">💬</span>
+          <textarea id="c-message" placeholder="Décrivez votre demande..." rows="5"></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-cyan mt2" id="btn-contact" onclick="handleContact()">
+        <span class="spin" id="sp-contact"></span>
+        <span id="lbl-contact">✉️ Envoyer le message</span>
+      </button>
+
+      <!-- Confirmation envoi -->
+      <div class="alert-ok" id="contact-ok">
+        <span>✓</span>
+        <span>
+          Message prêt ! Cliquez sur le lien qui s'est ouvert dans votre messagerie,
+          ou écrivez directement à
+          <a href="mailto:alkaai.contact@gmail.com" style="color:var(--cyan)">alkaai.contact@gmail.com</a>.
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- ── Footer ──────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="about.html">À propos</a>
+    <a href="contact.html" class="active">Contact</a>
+    <a href="privacy.html">Politique de confidentialité</a>
+    <a href="index.html">Accueil</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 Alka AI · Système d'identification d'urgence · Tous droits réservés
+  </div>
+</footer>
+
+<script>
+  function handleContact() {
+    var nom     = document.getElementById("c-nom").value.trim();
+    var email   = document.getElementById("c-email").value.trim();
+    var sujet   = document.getElementById("c-sujet").value;
+    var message = document.getElementById("c-message").value.trim();
+
+    if (!nom || !email || !message) {
+      alert("Veuillez remplir au moins votre nom, email et message.");
+      return;
+    }
+
+    // Ouvre le client mail avec les informations pré-remplies
+    var to      = "alkaai.contact@gmail.com";
+    var subject = encodeURIComponent((sujet || "Contact Alka AI") + " — " + nom);
+    var body    = encodeURIComponent(
+      "Nom : " + nom + "\n" +
+      "Email : " + email + "\n\n" +
+      message
+    );
+
+    window.location.href = "mailto:" + to + "?subject=" + subject + "&body=" + body;
+
+    // Afficher confirmation
+    document.getElementById("contact-ok").classList.add("show");
+    document.getElementById("btn-contact").disabled = true;
+    document.getElementById("lbl-contact").textContent = "✓ Message préparé";
+  }
+</script>
+</body>
+</html>

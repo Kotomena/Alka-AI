@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politique de confidentialité — Alka AI</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page header ──────────────────────────────────── */
+    .page-header {
+      text-align: center; padding: 3rem 1.5rem 2rem;
+    }
+    .page-header .ph-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      font-size: 2rem; margin-bottom: 1.25rem;
+      box-shadow: 0 0 32px rgba(124,92,252,.28);
+    }
+    .page-header h1 {
+      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--txt) 50%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: .6rem;
+    }
+    .page-header .date-update {
+      display: inline-block; margin-top: .5rem;
+      padding: .3rem .9rem; border-radius: 50px; font-size: .72rem;
+      background: rgba(0,212,255,.07); border: 1px solid rgba(0,212,255,.2);
+      color: var(--muted);
+    }
+
+    /* ── Article principal ────────────────────────────── */
+    .privacy-wrap {
+      max-width: 780px; margin: 0 auto; padding-bottom: 3rem;
+    }
+
+    /* ── Section ──────────────────────────────────────── */
+    .priv-section {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--rL); padding: 2rem 2.2rem;
+      margin-bottom: 1.25rem; transition: border-color var(--ease);
+    }
+    .priv-section:hover { border-color: var(--borderH); }
+    .priv-section h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800;
+      color: var(--cyan); margin-bottom: 1.1rem; padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .priv-section p {
+      font-size: .82rem; color: var(--muted); line-height: 1.85;
+      margin-bottom: .8rem;
+    }
+    .priv-section p:last-child { margin-bottom: 0; }
+    .priv-section strong { color: var(--txt); }
+
+    /* ── Liste ────────────────────────────────────────── */
+    .priv-list {
+      list-style: none; padding: 0; margin: .6rem 0 .8rem;
+    }
+    .priv-list li {
+      display: flex; align-items: flex-start; gap: .6rem;
+      font-size: .82rem; color: var(--muted); line-height: 1.7;
+      padding: .4rem 0; border-bottom: 1px solid rgba(255,255,255,.03);
+    }
+    .priv-list li:last-child { border-bottom: none; }
+    .priv-list li .bullet {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; margin-top: .15rem;
+    }
+
+    /* ── Tableau cookies ──────────────────────────────── */
+    .cookie-table {
+      width: 100%; border-collapse: collapse; margin: .8rem 0;
+    }
+    .cookie-table th {
+      text-align: left; padding: .55rem .9rem; font-size: .69rem;
+      color: var(--muted); text-transform: uppercase; letter-spacing: .07em;
+      border-bottom: 1px solid var(--border); background: var(--bg2);
+    }
+    .cookie-table td {
+      padding: .65rem .9rem; font-size: .79rem; color: var(--muted);
+      border-bottom: 1px solid rgba(255,255,255,.03); line-height: 1.6;
+    }
+    .cookie-table tr:hover td { background: rgba(0,212,255,.02); }
+
+    /* ── Boite AdSense ────────────────────────────────── */
+    .adsense-box {
+      background: linear-gradient(135deg, rgba(255,200,74,.05), rgba(124,92,252,.04));
+      border: 1px solid rgba(255,200,74,.2); border-radius: var(--r);
+      padding: 1rem 1.3rem; margin: .8rem 0;
+      display: flex; align-items: flex-start; gap: .75rem;
+    }
+    .adsense-box .ab-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .adsense-box p { font-size: .8rem; color: var(--muted); margin: 0; line-height: 1.7; }
+    .adsense-box a { color: var(--cyan); text-decoration: none; }
+    .adsense-box a:hover { text-decoration: underline; }
+
+    /* ── Droits section ───────────────────────────────── */
+    .rights-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .8rem; margin: .8rem 0;
+    }
+    .right-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: .9rem 1.1rem;
+    }
+    .right-item .ri-title {
+      font-family: 'Syne', sans-serif; font-size: .82rem;
+      font-weight: 700; color: var(--txt); margin-bottom: .3rem;
+    }
+    .right-item .ri-desc { font-size: .75rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Bannière résumé ──────────────────────────────── */
+    .summary-banner {
+      background: linear-gradient(135deg, rgba(0,212,255,.06), rgba(124,92,252,.04));
+      border: 1px solid rgba(0,212,255,.18); border-radius: var(--rL);
+      padding: 1.5rem 2rem; margin-bottom: 1.5rem;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; text-align: center;
+    }
+    .sb-item .sb-n {
+      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+      color: var(--cyan); display: block;
+    }
+    .sb-item .sb-l { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border); padding: 2rem 1.5rem; margin-top: 3rem;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .footer-links {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .footer-links a {
+      color: var(--muted); text-decoration: none; font-size: .78rem;
+      transition: color var(--ease);
+    }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-links a.active { color: var(--cyan); }
+    .footer-copy { font-size: .72rem; color: var(--dim); }
+
+    @media (max-width: 700px) {
+      .summary-banner { grid-template-columns: 1fr; }
+      .rights-grid { grid-template-columns: 1fr; }
+      .priv-section { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ───────────────────────────────────────── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">⬡ Alka AI</a>
+  <div class="nav-user">
+    <a href="index.html" class="btn-out" style="text-decoration:none">← Accueil</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<div class="privacy-wrap">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="ph-icon">🔒</div>
+    <h1>Politique de confidentialité</h1>
+    <span class="date-update">Dernière mise à jour : Janvier 2025</span>
+  </div>
+
+  <!-- Résumé chiffré -->
+  <div class="summary-banner">
+    <div class="sb-item">
+      <span class="sb-n">6</span>
+      <span class="sb-l">Types de données collectées</span>
+    </div>
+    <div class="sb-item">
+      <span class="sb-n">0</span>
+      <span class="sb-l">Ventes à des tiers</span>
+    </div>
+    <div class="sb-item">
+      <span class="sb-n">100%</span>
+      <span class="sb-l">Chiffrement des données</span>
+    </div>
+  </div>
+
+  <!-- 1. Introduction -->
+  <div class="priv-section">
+    <h2>📋 1. Introduction</h2>
+    <p>
+      La présente Politique de confidentialité décrit la manière dont <strong>Alka AI</strong>
+      collecte, utilise et protège les informations personnelles des utilisateurs de la plateforme
+      accessible à l'adresse de ce site.
+    </p>
+    <p>
+      En utilisant Alka AI, vous acceptez les pratiques décrites dans cette politique.
+      Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
+      Pour toute question, contactez-nous à
+      <a href="mailto:alkaai.contact@gmail.com" style="color:var(--cyan)">alkaai.contact@gmail.com</a>.
+    </p>
+  </div>
+
+  <!-- 2. Données collectées -->
+  <div class="priv-section">
+    <h2>📂 2. Données personnelles collectées</h2>
+    <p>
+      Lors de votre inscription, Alka AI collecte les informations suivantes :
+    </p>
+    <ul class="priv-list">
+      <li>
+        <div class="bullet" style="background:rgba(0,212,255,.12);color:var(--cyan)">👤</div>
+        <div><strong>Nom complet</strong> — utilisé pour l'identification dans la base de données. Doit être unique.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(0,212,255,.12);color:var(--cyan)">📧</div>
+        <div><strong>Adresse email</strong> — utilisée pour l'authentification et les communications. Doit être unique.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(255,200,74,.12);color:var(--gold)">🪪</div>
+        <div><strong>Numéro CIN</strong> (Carte d'Identité Nationale) — utilisé pour l'identification en cas d'urgence. Doit être unique.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(255,200,74,.12);color:var(--gold)">📍</div>
+        <div><strong>Adresse physique</strong> — utilisée pour localiser la personne en cas d'urgence.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(255,60,60,.12);color:#ff8080)">🚑</div>
+        <div><strong>Contact d'urgence</strong> — nom et numéro de téléphone d'un proche à contacter en cas d'accident.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(124,92,252,.12);color:var(--purple)">📸</div>
+        <div><strong>Photo de profil</strong> — image uploadée et stockée dans notre service de stockage sécurisé (Supabase Storage). Utilisée pour l'identification visuelle.</div>
+      </li>
+    </ul>
+    <p>
+      Les données de <strong>navigation</strong> (adresse IP, navigateur, pages visitées)
+      peuvent également être collectées automatiquement à des fins d'analyse et de sécurité.
+    </p>
+  </div>
+
+  <!-- 3. Utilisation IA -->
+  <div class="priv-section">
+    <h2>🤖 3. Utilisation de l'intelligence artificielle</h2>
+    <p>
+      Alka AI utilise des technologies d'<strong>intelligence artificielle et de reconnaissance faciale</strong>
+      pour analyser les images soumises lors des recherches d'urgence.
+    </p>
+    <p>
+      Ce traitement implique :
+    </p>
+    <ul class="priv-list">
+      <li>
+        <div class="bullet" style="background:rgba(124,92,252,.12);color:var(--purple)">🔢</div>
+        <div>La <strong>génération d'encodages faciaux</strong> — votre photo est convertie en un vecteur de 128 valeurs numériques représentant les caractéristiques de votre visage.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(124,92,252,.12);color:var(--purple)">📐</div>
+        <div>La <strong>comparaison mathématique</strong> — lors d'une recherche par photo, l'encodage est comparé à ceux stockés en base via une distance euclidienne. Un seuil strict (0.55) évite les faux positifs.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(124,92,252,.12);color:var(--purple)">🎯</div>
+        <div>Les <strong>encodages faciaux</strong> sont stockés dans notre base de données sécurisée et ne sont jamais partagés avec des tiers.</div>
+      </li>
+    </ul>
+    <p>
+      La fonctionnalité de reconnaissance faciale est <strong>temporairement désactivée</strong>.
+      Lorsqu'elle sera réactivée, votre consentement explicite vous sera demandé.
+    </p>
+  </div>
+
+  <!-- 4. Cookies & AdSense -->
+  <div class="priv-section">
+    <h2>🍪 4. Cookies et Google AdSense</h2>
+    <p>
+      Alka AI peut utiliser des <strong>cookies</strong> et des technologies similaires pour améliorer
+      votre expérience et diffuser des publicités pertinentes via <strong>Google AdSense</strong>.
+    </p>
+
+    <table class="cookie-table">
+      <thead>
+        <tr>
+          <th>Type de cookie</th>
+          <th>Finalité</th>
+          <th>Durée</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Session (auth)</strong></td>
+          <td>Maintenir votre connexion sur le site</td>
+          <td>Session / 7 jours</td>
+        </tr>
+        <tr>
+          <td><strong>Fonctionnels</strong></td>
+          <td>Mémoriser vos préférences (ex: compteur de recherches)</td>
+          <td>1 mois</td>
+        </tr>
+        <tr>
+          <td><strong>Google AdSense</strong></td>
+          <td>Afficher des publicités personnalisées</td>
+          <td>Jusqu'à 13 mois</td>
+        </tr>
+        <tr>
+          <td><strong>Google Analytics</strong></td>
+          <td>Mesure d'audience anonyme</td>
+          <td>26 mois</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="adsense-box">
+      <div class="ab-icon">📢</div>
+      <p>
+        <strong>Google AdSense</strong> utilise des cookies pour diffuser des annonces basées sur
+        vos visites précédentes sur ce site et d'autres sites. Vous pouvez désactiver la publicité
+        personnalisée en visitant
+        <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">
+          google.com/settings/ads
+        </a>.
+        Pour en savoir plus sur la manière dont Google utilise les données, consultez
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">
+          policies.google.com
+        </a>.
+      </p>
+    </div>
+
+    <p>
+      Vous pouvez gérer ou désactiver les cookies via les paramètres de votre navigateur.
+      Notez que la désactivation de certains cookies peut altérer le fonctionnement du site.
+    </p>
+  </div>
+
+  <!-- 5. Protection des données -->
+  <div class="priv-section">
+    <h2>🛡️ 5. Protection et sécurité des données</h2>
+    <p>
+      Alka AI prend la sécurité de vos données très au sérieux. Nous mettons en œuvre
+      les mesures techniques et organisationnelles suivantes :
+    </p>
+    <ul class="priv-list">
+      <li>
+        <div class="bullet" style="background:rgba(74,222,128,.1);color:#4ade80">✓</div>
+        <div><strong>Chiffrement en transit</strong> — toutes les communications entre votre navigateur et nos serveurs sont chiffrées via HTTPS/TLS.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(74,222,128,.1);color:#4ade80">✓</div>
+        <div><strong>Chiffrement au repos</strong> — les données stockées dans Supabase sont chiffrées au niveau de la base de données.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(74,222,128,.1);color:#4ade80">✓</div>
+        <div><strong>Contrôle d'accès (RLS)</strong> — les politiques Row Level Security de Supabase garantissent que chaque utilisateur n'accède qu'à ses propres données.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(74,222,128,.1);color:#4ade80">✓</div>
+        <div><strong>Unicité stricte</strong> — les contraintes UNIQUE sur l'email, le CIN et le nom empêchent toute duplication ou usurpation de profil.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(74,222,128,.1);color:#4ade80">✓</div>
+        <div><strong>Aucune vente de données</strong> — vos données personnelles ne sont jamais vendues, louées ou partagées à des fins commerciales avec des tiers.</div>
+      </li>
+    </ul>
+    <p>
+      Malgré ces mesures, aucun système n'est infaillible. En cas de violation de données,
+      nous nous engageons à vous notifier dans les délais légaux applicables.
+    </p>
+  </div>
+
+  <!-- 6. Droits des utilisateurs -->
+  <div class="priv-section">
+    <h2>⚖️ 6. Vos droits</h2>
+    <p>
+      Conformément aux réglementations applicables en matière de protection des données,
+      vous disposez des droits suivants :
+    </p>
+    <div class="rights-grid">
+      <div class="right-item">
+        <div class="ri-title">👁 Droit d'accès</div>
+        <div class="ri-desc">Obtenir une copie de toutes vos données personnelles stockées.</div>
+      </div>
+      <div class="right-item">
+        <div class="ri-title">✏️ Droit de rectification</div>
+        <div class="ri-desc">Corriger des informations inexactes ou incomplètes.</div>
+      </div>
+      <div class="right-item">
+        <div class="ri-title">🗑️ Droit à l'effacement</div>
+        <div class="ri-desc">Demander la suppression de votre compte et de toutes vos données.</div>
+      </div>
+      <div class="right-item">
+        <div class="ri-title">🚫 Droit d'opposition</div>
+        <div class="ri-desc">Vous opposer au traitement de vos données à des fins de publicité.</div>
+      </div>
+    </div>
+    <p style="margin-top:.9rem">
+      Pour exercer l'un de ces droits, contactez-nous à :
+      <a href="mailto:alkaai.contact@gmail.com?subject=Données personnelles" style="color:var(--cyan)">
+        alkaai.contact@gmail.com
+      </a>.
+      Nous traiterons votre demande dans un délai maximum de <strong>30 jours</strong>.
+    </p>
+  </div>
+
+  <!-- 7. Partage des données -->
+  <div class="priv-section">
+    <h2>🤝 7. Partage des données avec des tiers</h2>
+    <p>
+      Alka AI <strong>ne vend jamais vos données personnelles</strong>.
+      Vos informations peuvent cependant être partagées avec :
+    </p>
+    <ul class="priv-list">
+      <li>
+        <div class="bullet" style="background:rgba(0,212,255,.1);color:var(--cyan)">☁</div>
+        <div><strong>Supabase</strong> — notre fournisseur de base de données et de stockage (conforme SOC 2 Type II).</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(255,200,74,.1);color:var(--gold)">📢</div>
+        <div><strong>Google AdSense / Google LLC</strong> — pour la diffusion de publicités contextuelles, dans le respect de la politique de confidentialité de Google.</div>
+      </li>
+      <li>
+        <div class="bullet" style="background:rgba(255,60,60,.1);color:#ff8080">⚖</div>
+        <div><strong>Autorités légales</strong> — uniquement si la loi l'exige (décision judiciaire, obligation légale).</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 8. Modifications -->
+  <div class="priv-section">
+    <h2>🔄 8. Modifications de cette politique</h2>
+    <p>
+      Alka AI se réserve le droit de modifier cette politique de confidentialité à tout moment.
+      Toute modification sera publiée sur cette page avec une <strong>date de mise à jour</strong>.
+    </p>
+    <p>
+      En continuant à utiliser le site après la publication de modifications, vous acceptez
+      la politique mise à jour. Nous vous encourageons à consulter cette page régulièrement.
+    </p>
+    <p>
+      Pour toute question concernant cette politique :
+      <a href="mailto:alkaai.contact@gmail.com" style="color:var(--cyan)">alkaai.contact@gmail.com</a>
+    </p>
+  </div>
+
+</div><!-- /privacy-wrap -->
+</div><!-- /wrap -->
+
+<!-- ── Footer ──────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="about.html">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html" class="active">Politique de confidentialité</a>
+    <a href="index.html">Accueil</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 Alka AI · Système d'identification d'urgence · Tous droits réservés
+  </div>
+</footer>
+
+</body>
+</html>

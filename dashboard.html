@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alka AI — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+
+    /* ── Alertes ──────────────────────────────────────────── */
+    .alert {
+      display: none; align-items: center; gap: .6rem;
+      padding: .65rem 1rem; border-radius: var(--r); font-size: .8rem;
+    }
+    .alert.show  { display: flex; }
+    .alert-err   { background: rgba(255,60,60,.07);  border: 1px solid rgba(255,60,60,.22);  color: #ff8080; }
+    .alert-ok    { background: rgba(0,212,255,.07);  border: 1px solid rgba(0,212,255,.22);  color: var(--cyan); }
+    .alert-warn  { background: rgba(255,200,74,.07); border: 1px solid rgba(255,200,74,.25); color: var(--gold); }
+
+    /* ── Spinner bouton ────────────────────────────────────── */
+    .spin {
+      display: none; width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.25); border-top-color: #fff;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Boutons ──────────────────────────────────────────── */
+    .btn-red {
+      background: linear-gradient(135deg, var(--red), var(--red2));
+      color: #fff; box-shadow: 0 4px 18px rgba(255,60,60,.25);
+    }
+    .btn-red:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(255,60,60,.38); }
+
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border); color: var(--muted);
+    }
+    .btn-ghost:hover { border-color: var(--borderH); color: var(--txt); }
+
+    /* ── Barre chargement ─────────────────────────────────── */
+    .search-bar {
+      display: none; align-items: center; gap: .75rem;
+      padding: .7rem 1rem; margin-top: .75rem;
+      background: rgba(0,212,255,.05);
+      border: 1px solid rgba(0,212,255,.2);
+      border-radius: var(--r); font-size: .8rem; color: var(--cyan);
+    }
+    .search-bar.show { display: flex; }
+    .bar-spin {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid rgba(0,212,255,.25); border-top-color: var(--cyan);
+      animation: spin .7s linear infinite; flex-shrink: 0;
+    }
+
+    /* ── Empty state ─────────────────────────────────────── */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 3rem 1.5rem; text-align: center;
+    }
+
+    /* ── Carte résultat ──────────────────────────────────── */
+    .urg-card { animation: slideIn .35s ease; }
+    .urg-card + .urg-card {
+      margin-top: 1.5rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .urg-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding-bottom: 1rem; margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .urg-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 3px solid var(--cyan); flex-shrink: 0;
+      background: var(--bg2); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; box-shadow: 0 0 22px rgba(0,212,255,.2);
+    }
+    .urg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .urg-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; }
+    .urg-info-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .7rem; margin-bottom: 1rem;
+    }
+    .urg-info-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: .7rem .9rem;
+    }
+    .urg-info-label {
+      font-size: .67rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: .3rem;
+    }
+    .urg-info-val {
+      font-family: 'Syne', sans-serif; font-size: .84rem;
+      font-weight: 600; word-break: break-word;
+    }
+
+    /* ── Badge ────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .25rem .7rem; border-radius: 50px;
+      font-size: .71rem; font-weight: 600; margin-top: .25rem;
+    }
+    .badge-ok  { background: rgba(0,212,255,.09);  border: 1px solid rgba(0,212,255,.3);  color: var(--cyan); }
+    .badge-no  { background: rgba(255,60,60,.09);  border: 1px solid rgba(255,60,60,.3);  color: #ff7070; }
+    .badge-dis { background: rgba(255,200,74,.09); border: 1px solid rgba(255,200,74,.3); color: var(--gold); }
+
+    /* ── Contact urgence ─────────────────────────────────── */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(255,60,60,.06), rgba(255,100,50,.04));
+      border: 1px solid rgba(255,60,60,.26); border-radius: var(--rL);
+      padding: 1.1rem 1.4rem; position: relative; overflow: hidden;
+    }
+    .contact-box::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: linear-gradient(180deg, var(--red), var(--red2));
+    }
+    .contact-label {
+      font-size: .68rem; color: #ff8080;
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .4rem; font-weight: 600;
+    }
+    .contact-val { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; margin-bottom: .75rem; }
+    .btn-call {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem;
+      background: linear-gradient(135deg, var(--red), var(--red2));
+      color: #fff; border-radius: 50px;
+      font-family: 'Syne', sans-serif; font-size: .78rem; font-weight: 700;
+      text-decoration: none; transition: all var(--ease);
+      box-shadow: 0 4px 14px rgba(255,60,60,.2);
+    }
+    .btn-call:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,60,60,.36); }
+
+    /* ── Box "désactivée" ────────────────────────────────── */
+    .disabled-box {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .75rem; padding: 1.75rem 1.5rem; text-align: center;
+      background: rgba(255,200,74,.04);
+      border: 1px dashed rgba(255,200,74,.25);
+      border-radius: var(--r);
+    }
+    .disabled-box .dicon { font-size: 2.2rem; }
+    .disabled-box .dtitle {
+      font-family: 'Syne', sans-serif; font-size: .95rem;
+      font-weight: 700; color: var(--gold);
+    }
+    .disabled-box .dsub { font-size: .78rem; color: var(--muted); max-width: 280px; line-height: 1.5; }
+
+    @media (max-width: 600px) {
+      .urg-info-grid { grid-template-columns: 1fr; }
+      .urg-header    { flex-direction: column; text-align: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <a href="#" class="nav-brand">⬡ Alka AI</a>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-dash"    onclick="showPage('dash')">🏠 Dashboard</button>
+    <button class="nav-tab red"    id="tab-urgence" onclick="showPage('urgence')">🚨 Urgence</button>
+  </div>
+
+  <div class="nav-user">
+    <div class="user-chip">
+      <div class="u-dot"></div>
+      <span id="nav-username">…</span>
+    </div>
+    <button class="btn-out" onclick="handleLogout()">Déconnexion</button>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE 1 · DASHBOARD
+════════════════════════════════════════════════════════ -->
+<div id="page-dash" class="wrap">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-n" id="s-users">—</span>
+      <div class="stat-l">Profils</div>
+    </div>
+    <div class="stat">
+      <span class="stat-n" id="s-photos">—</span>
+      <div class="stat-l">Photos</div>
+    </div>
+    <div class="stat">
+      <span class="stat-n" id="s-scans">0</span>
+      <div class="stat-l">Recherches</div>
+    </div>
+  </div>
+
+  <!-- Grille : info + liste profils -->
+  <div class="grid2">
+
+    <!-- Panneau info système -->
+    <div class="panel">
+      <div class="ph">
+        <div class="pi g">⚡</div>
+        <div>
+          <div class="pt">Système Alka AI</div>
+          <div class="ps">État des fonctionnalités</div>
+        </div>
+      </div>
+
+      <!-- Statut fonctionnalités -->
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:.65rem 1rem;background:var(--bg4);
+                    border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:.82rem">🪪 Recherche par CIN</span>
+          <span class="badge badge-ok">✓ Actif</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:.65rem 1rem;background:var(--bg4);
+                    border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:.82rem">📍 Recherche par Adresse</span>
+          <span class="badge badge-ok">✓ Actif</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:.65rem 1rem;background:var(--bg4);
+                    border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:.82rem">📝 Inscription utilisateurs</span>
+          <span class="badge badge-ok">✓ Actif</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:.65rem 1rem;background:var(--bg4);
+                    border:1px solid rgba(255,200,74,.2);border-radius:var(--r)">
+          <span style="font-size:.82rem">📷 Reconnaissance faciale</span>
+          <span class="badge badge-dis">⏸ Désactivée</span>
+        </div>
+
+      </div>
+
+      <div class="alert alert-warn mt2" style="display:flex">
+        <span>⏸</span>
+        <span>La reconnaissance faciale est temporairement désactivée. Les recherches par CIN et Adresse fonctionnent normalement.</span>
+      </div>
+    </div>
+
+    <!-- Liste des profils -->
+    <div class="panel">
+      <div class="ph">
+        <div class="pi p">👥</div>
+        <div>
+          <div class="pt">Profils enregistrés</div>
+          <div class="ps">Derniers utilisateurs</div>
+        </div>
+      </div>
+      <div id="users-list"><p class="c-muted tc mt2">Chargement…</p></div>
+    </div>
+
+  </div>
+</div><!-- /page-dash -->
+
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE 2 · RECHERCHE URGENCE
+════════════════════════════════════════════════════════ -->
+<div id="page-urgence" class="wrap" style="display:none">
+
+  <!-- Bannière urgence -->
+  <div class="urgence-banner">
+    <div class="ub-icon">🚨</div>
+    <div style="flex:1">
+      <div class="ub-title">Système d'Identification d'Urgence</div>
+      <div class="ub-sub">Identifiez rapidement une personne en cas d'accident ou de situation critique</div>
+    </div>
+    <div class="ub-pulse"></div>
+  </div>
+
+  <div class="ug-grid">
+
+    <!-- ── Formulaire de recherche ────────────────────────── -->
+    <div class="panel ug-form">
+      <div class="ph">
+        <div class="pi r">🔍</div>
+        <div>
+          <div class="pt">Rechercher une personne</div>
+          <div class="ps">CIN ou Adresse</div>
+        </div>
+      </div>
+
+      <!-- Onglets méthode -->
+      <div class="method-tabs">
+        <button class="mtab active" id="mt-cin"     onclick="setMethod('cin')">🪪 CIN</button>
+        <button class="mtab"        id="mt-adresse"  onclick="setMethod('adresse')">📍 Adresse</button>
+        <button class="mtab"        id="mt-photo"    onclick="setMethod('photo')">📷 Photo</button>
+      </div>
+
+      <!-- ─── MÉTHODE CIN ─────────────────────────────────── -->
+      <div id="field-cin">
+        <div class="fg">
+          <label>🪪 Numéro CIN</label>
+          <div class="iw">
+            <span class="icon">🪪</span>
+            <input type="text" id="s-cin"
+                   placeholder="ex : 101 234 567 890"
+                   oninput="clearResult()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── MÉTHODE ADRESSE ─────────────────────────────── -->
+      <div id="field-adresse" style="display:none">
+        <div class="fg">
+          <label>📍 Adresse</label>
+          <div class="iw">
+            <span class="icon">📍</span>
+            <input type="text" id="s-adresse"
+                   placeholder="ex : Antananarivo, rue..."
+                   oninput="clearResult()" />
+          </div>
+          <div class="c-muted" style="font-size:.7rem;margin-top:.4rem">
+            💡 Plusieurs personnes à la même adresse s'afficheront toutes.
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── MÉTHODE PHOTO (désactivée) ─────────────────── -->
+      <div id="field-photo" style="display:none">
+        <div class="disabled-box">
+          <div class="dicon">📷</div>
+          <div class="dtitle">Reconnaissance faciale désactivée</div>
+          <div class="dsub">
+            La recherche par photo est temporairement indisponible.<br>
+            Utilisez le <strong>CIN</strong> ou l'<strong>Adresse</strong> pour identifier la personne.
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton Rechercher -->
+      <button class="btn btn-red mt2" id="btn-search" onclick="searchPerson()">
+        <span class="spin" id="sp-search"></span>
+        <span id="lbl-search">🔍 Rechercher</span>
+      </button>
+
+      <div class="alert alert-err mt2" id="search-err">
+        <span>⚠</span><span id="search-err-msg"></span>
+      </div>
+
+      <!-- Barre recherche en cours -->
+      <div class="search-bar" id="search-bar">
+        <div class="bar-spin"></div>
+        <span id="search-bar-txt">Recherche en cours…</span>
+      </div>
+
+      <!-- Tips -->
+      <div class="search-tips">
+        <div class="tip">🪪 CIN : correspondance exacte, résultat unique</div>
+        <div class="tip">📍 Adresse : tous les habitants de cette adresse</div>
+        <div class="tip">📷 Photo : temporairement désactivée</div>
+      </div>
+    </div><!-- /ug-form -->
+
+
+    <!-- ── Panneau résultat ──────────────────────────────── -->
+    <div class="panel" id="result-panel">
+      <div class="ph">
+        <div class="pi r">📋</div>
+        <div>
+          <div class="pt">Résultat</div>
+          <div class="ps" id="result-sub">En attente d'une recherche</div>
+        </div>
+      </div>
+
+      <!-- État vide -->
+      <div id="res-empty" class="empty-state">
+        <div style="font-size:2.8rem;margin-bottom:1rem">🔎</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:600;color:var(--muted)">
+          Lancez une recherche
+        </div>
+        <div class="c-muted mt1" style="max-width:240px">
+          Saisissez un CIN ou une adresse, puis cliquez sur Rechercher.
+        </div>
+      </div>
+
+      <!-- Résultat(s) trouvé(s) — généré dynamiquement par showResult() -->
+      <div id="res-found" style="display:none"></div>
+
+      <!-- Personne non trouvée -->
+      <div id="res-notfound" style="display:none" class="empty-state">
+        <div style="font-size:2.8rem;margin-bottom:1rem">❌</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;color:#ff6b6b;font-size:1rem">
+          Personne non trouvée
+        </div>
+        <div class="c-muted mt1" style="max-width:280px">
+          Aucun profil ne correspond à ces critères dans la base de données.
+        </div>
+        <button class="btn btn-ghost mt3" onclick="clearResult()" style="max-width:200px">
+          ↺ Réessayer
+        </button>
+      </div>
+
+    </div><!-- /result-panel -->
+  </div><!-- /ug-grid -->
+</div><!-- /page-urgence -->
+
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+
+<!-- ── Footer ──────────────────────────────────────────────── -->
+<footer style="border-top:1px solid var(--border);padding:1.75rem 1.5rem;margin-top:2rem;text-align:center;position:relative;z-index:1">
+  <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:.75rem">
+    <a href="about.html"   style="color:var(--muted);text-decoration:none;font-size:.77rem;transition:color .3s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">À propos</a>
+    <a href="contact.html" style="color:var(--muted);text-decoration:none;font-size:.77rem;transition:color .3s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Contact</a>
+    <a href="privacy.html" style="color:var(--muted);text-decoration:none;font-size:.77rem;transition:color .3s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Politique de confidentialité</a>
+  </div>
+  <div style="font-size:.7rem;color:var(--dim)">© 2025 Alka AI · Système d'identification d'urgence · Tous droits réservés</div>
+</footer>
+</body>
+</html>

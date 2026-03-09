@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À propos — Alka AI</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page content ─────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+    }
+    .page-header .ph-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      font-size: 2rem; margin-bottom: 1.25rem;
+      box-shadow: 0 0 32px rgba(0,212,255,.28);
+    }
+    .page-header h1 {
+      font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--txt) 50%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: .6rem;
+    }
+    .page-header p { color: var(--muted); font-size: .85rem; max-width: 520px; margin: 0 auto; }
+
+    /* ── Section cards ────────────────────────────────── */
+    .about-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin: 2rem 0;
+    }
+    .about-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--rL); padding: 1.6rem 1.4rem;
+      transition: all var(--ease);
+    }
+    .about-card:hover { border-color: var(--borderH); transform: translateY(-3px); }
+    .about-card .ac-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 1rem;
+    }
+    .about-card h3 {
+      font-family: 'Syne', sans-serif; font-size: .95rem;
+      font-weight: 700; margin-bottom: .55rem; color: var(--txt);
+    }
+    .about-card p { font-size: .79rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── Prose block ──────────────────────────────────── */
+    .prose {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--rL); padding: 2rem 2.5rem; margin: 1.5rem 0;
+    }
+    .prose h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 800;
+      color: var(--cyan); margin-bottom: 1rem; padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .prose p { font-size: .83rem; color: var(--muted); line-height: 1.85; margin-bottom: .9rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--txt); }
+
+    /* ── Mission banner ───────────────────────────────── */
+    .mission-banner {
+      background: linear-gradient(135deg, rgba(0,212,255,.06), rgba(124,92,252,.04));
+      border: 1px solid rgba(0,212,255,.18); border-radius: var(--rL);
+      padding: 2rem 2.5rem; margin: 1.5rem 0; position: relative; overflow: hidden;
+    }
+    .mission-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--cyan));
+      background-size: 200%; animation: slideBorder 3s linear infinite;
+    }
+    @keyframes slideBorder { from { background-position: 0 } to { background-position: 200% } }
+    .mission-banner h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800;
+      color: var(--cyan); margin-bottom: .75rem;
+    }
+    .mission-banner p { font-size: .84rem; color: var(--muted); line-height: 1.8; }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem; margin-top: 3rem;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .footer-links {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .footer-links a {
+      color: var(--muted); text-decoration: none; font-size: .78rem;
+      transition: color var(--ease);
+    }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-links a.active { color: var(--cyan); }
+    .footer-copy { font-size: .72rem; color: var(--dim); }
+
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .prose, .mission-banner { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar minimale ──────────────────────────────── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">⬡ Alka AI</a>
+  <div class="nav-user">
+    <a href="index.html" class="btn-out" style="text-decoration:none">← Accueil</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="ph-icon">⬡</div>
+    <h1>À propos d'Alka AI</h1>
+    <p>Une plateforme d'identification intelligente au service des situations d'urgence</p>
+  </div>
+
+  <!-- Mission -->
+  <div class="mission-banner">
+    <h2>🎯 Notre mission</h2>
+    <p>
+      Alka AI est une plateforme utilisant l'intelligence artificielle pour aider à
+      <strong>identifier des personnes dans des situations d'urgence</strong> — accidents,
+      disparitions, ou situations critiques nécessitant une identification rapide.
+      Grâce à la reconnaissance faciale et à une base de données sécurisée,
+      les équipes de secours peuvent retrouver l'identité d'une personne en quelques secondes,
+      accéder à ses informations et contacter sa famille immédiatement.
+    </p>
+  </div>
+
+  <!-- 3 cartes fonctionnalités -->
+  <div class="about-grid">
+
+    <div class="about-card">
+      <div class="ac-icon" style="background:rgba(0,212,255,.1)">🤖</div>
+      <h3>Intelligence Artificielle</h3>
+      <p>
+        Alka AI utilise des algorithmes avancés de reconnaissance faciale basés sur
+        <strong>face_recognition</strong> et <strong>deep learning</strong> pour comparer
+        les visages avec précision, même dans des conditions difficiles.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <div class="ac-icon" style="background:rgba(255,60,60,.1)">🚨</div>
+      <h3>Identification d'urgence</h3>
+      <p>
+        En cas d'accident ou de situation critique, les secouristes peuvent
+        rechercher une personne par <strong>photo</strong>, <strong>numéro CIN</strong>
+        ou <strong>adresse</strong> pour obtenir ses informations et contacter sa famille.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <div class="ac-icon" style="background:rgba(124,92,252,.1)">🔒</div>
+      <h3>Données sécurisées</h3>
+      <p>
+        Toutes les données personnelles sont stockées de manière sécurisée via
+        <strong>Supabase</strong>, avec chiffrement, politiques d'accès strictes
+        et conformité aux bonnes pratiques de protection des données.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Comment ça marche -->
+  <div class="prose">
+    <h2>⚙️ Comment fonctionne Alka AI ?</h2>
+    <p>
+      Les utilisateurs s'inscrivent en fournissant leurs informations personnelles
+      (nom complet, CIN, adresse, contact d'urgence) et une photo de profil.
+      Ces données sont stockées de manière sécurisée dans notre base de données.
+    </p>
+    <p>
+      En situation d'urgence, un agent ou un secouriste peut accéder au
+      <strong>système de recherche d'urgence</strong> et identifier une personne
+      via son numéro de CIN ou son adresse. La plateforme retourne immédiatement
+      le profil correspondant avec les coordonnées de la famille à contacter.
+    </p>
+    <p>
+      La fonctionnalité de <strong>reconnaissance faciale</strong> — actuellement
+      en développement — permettra d'identifier une personne uniquement à partir d'une photo,
+      en comparant son visage avec les encodages stockés en base grâce à un seuil
+      de similarité strict pour éviter toute erreur d'identification.
+    </p>
+  </div>
+
+  <!-- À qui s'adresse -->
+  <div class="prose">
+    <h2>👥 À qui s'adresse cette plateforme ?</h2>
+    <p>
+      Alka AI s'adresse à <strong>toute personne souhaitant enregistrer ses informations</strong>
+      en cas d'urgence, mais aussi aux <strong>services de secours, hôpitaux et forces de l'ordre</strong>
+      qui ont besoin d'identifier rapidement une personne blessée, inconsciente ou en détresse.
+    </p>
+    <p>
+      La plateforme est conçue pour être <strong>simple, rapide et accessible</strong>
+      sur tous les appareils, y compris depuis un téléphone mobile sur le terrain.
+    </p>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- ── Footer ──────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="about.html" class="active">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Politique de confidentialité</a>
+    <a href="index.html">Accueil</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 Alka AI · Système d'identification d'urgence · Tous droits réservés
+  </div>
+</footer>
+
+</body>
+</html>
